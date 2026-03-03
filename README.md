@@ -25,7 +25,7 @@
 It provides swap, liquidity management, pool creation, and portfolio tracking across 8 EVM networks — while enforcing a minimal on-chain protocol fee through a controlled gateway router.
 
 DexGateway is **integration-first**. No AMM logic is reimplemented. No DEX core contracts are forked or modified. It is structured middleware between users and decentralized liquidity.
-```
+```js
 [ User ] ──► [ ExchangeDeskRouter ] ──► [ Official V2 Router / Factory / Pair ]
                      │
                Fee deducted
@@ -252,4 +252,5 @@ cd backend && npm install && npm run dev
 *DexGateway — One router. Every V2 pool.*
 
 </div>
+
 
