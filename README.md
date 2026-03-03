@@ -1,316 +1,254 @@
-# UniV2-ExchangeDesk
+<div align="center">
 
-UniV2-ExchangeDesk is a full-stack decentralized application that provides a unified
-interface for interacting with existing Uniswap V2 liquidity pools. The project focuses
-on correct protocol integration, on-chain data interpretation, and end-to-end Web3
-application design.
+# 🧩 DexGateway
 
-This project is built as a learning-focused but production-aligned implementation,
-emphasizing protocol mechanics, safety considerations, and clean architecture rather
-than protocol forking or modification.
+**Multi-Chain AMM Execution Infrastructure**
 
----
+*One router. Every chain. Every V2 pool.*
 
-## Core Functionality
+<br/>
 
-The application enables users to:
+[![Chains](https://img.shields.io/badge/Networks-9_EVM_Chains-6366f1?style=for-the-badge)](https://github.com)
+[![DEXes](https://img.shields.io/badge/DEXes-Uniswap_·_Sushi_·_PancakeSwap_+more-f97316?style=for-the-badge)](https://github.com)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.x-363636?style=for-the-badge&logo=solidity&logoColor=white)](https://soliditylang.org)
+[![Foundry](https://img.shields.io/badge/Tests-Foundry-F05032?style=for-the-badge)](https://book.getfoundry.sh)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 
-- Swap tokens using existing Uniswap V2 pools
-- Add and remove liquidity to become liquidity providers (LPs)
-- Create a new Uniswap V2 pool when a token pair does not yet exist
-- View on-chain token prices derived from pool reserves
-- Inspect pool reserves, LP token balances, and pool share
-- Interact securely via MetaMask wallet integration
-- Optionally apply a platform-level protocol fee through an external wrapper contract
-
-> Note: This project integrates with already-deployed Uniswap V2 contracts and does not
-fork, redeploy, or modify Uniswap core or periphery logic.
+</div>
 
 ---
 
-## Technical Scope and Design Principles
+## What is DexGateway?
 
-- Integration-first design (no AMM reimplementation)
-- Direct interaction with Uniswap V2 Factory, Router, and Pair contracts
-- On-chain price discovery using reserve-based calculations
-- Strict separation between smart contracts, frontend, and backend layers
-- Minimal Solidity surface area to reduce attack surface
-- Backend services are read-only and never custody private keys
+**DexGateway is a multi-chain liquidity execution gateway that unifies interaction with Uniswap V2–based DEXes into a single, standardized routing layer.**
 
----
+It provides swap, liquidity management, pool creation, and portfolio tracking across 8 EVM networks — while enforcing a minimal on-chain protocol fee through a controlled gateway router.
 
-## Technology Stack
-
-### Smart Contracts
-- Solidity ^0.8.x
-- Foundry (forge, anvil, cast)
-- Uniswap V2 interfaces (Factory, Router02, Pair)
-
-### Frontend
-- React
-- Vite
-- ethers.js
-- MetaMask (EIP-1193 provider)
-
-### Backend (Optional / Read-Only)
-- Node.js
-- Express
-- ethers.js (RPC-based reads only)
-
----
-
-## Project Structure
-
-```js
-UniV2-ExchangeDesk/
-├── contracts/  # Foundry-based Solidity contracts and interfaces
-├── frontend/ # React frontend (wallet, swaps, liquidity UI)
-├── backend/ # Optional backend for simulations and indexing
-└── README.md
+DexGateway is **integration-first**. No AMM logic is reimplemented. No DEX core contracts are forked or modified. It is structured middleware between users and decentralized liquidity.
+```
+[ User ] ──► [ ExchangeDeskRouter ] ──► [ Official V2 Router / Factory / Pair ]
+                     │
+               Fee deducted
+               on-chain (0.01%)
+               non-bypassable
 ```
 
 ---
 
-## Learning Objectives
+## Design Philosophy
 
-This project is designed to demonstrate practical understanding of:
-
-- Uniswap V2 architecture (Factory / Router / Pair)
-- ERC-20 approvals, decimals, and balance handling
-- AMM pricing mechanics and reserve-based price calculation
-- Liquidity provider mechanics and LP token accounting
-- MetaMask wallet integration and transaction lifecycle handling
-- Full-stack Web3 application architecture
-- Safe integration patterns for external DeFi protocols
+| DexGateway IS | DexGateway is NOT |
+|---|---|
+| A structured execution gateway | A DEX or AMM implementation |
+| A unified multi-chain routing layer | A cross-chain bridge |
+| A router-enforced fee layer | A price oracle or aggregator |
+| Infrastructure for V2 liquidity surfaces | A trading terminal or analytics product |
 
 ---
 
-## Current Status
+## Supported Networks
 
-Project is under working state .
+DexGateway currently supports the following EVM-compatible blockchains:
+
+- Ethereum
+- BNB Chain
+- Arbitrum
+- Polygon
+- Avalanche
+- Base
+- Unichain
+- Shibarium
+
+Each network will have its own deployed `ExchangeDeskRouter.sol` instance.
+Execution is always single-chain — no cross-chain routing is abstracted.
 
 ---
 
-## Disclaimer
+## Supported DEX Integrations
 
-This project is built for educational and portfolio purposes. It is not audited and
-should not be used in production environments involving real user funds.
+DexGateway currently supports major Uniswap V2 fork exchanges:
 
+| DEX | Network |
+|---|---|
+| Uniswap | Ethereum, Arbitrum, Base |
+| SushiSwap | Multi-chain |
+| PancakeSwap | BNB Chain |
+| QuickSwap | Polygon |
+| BaseSwap | Base |
+| ShibaSwap | Shibarium |
+| Pangolin | Avalanche |
 
+All integrations use the **official Factory / Router / Pair contracts** of each protocol.
+DexGateway does not modify or replace any AMM logic.
 
+---
 
-What UniV2-ExchangeDesk Actually Does (Final)
+## Core Capabilities
 
-UniV2-ExchangeDesk is a multi-chain Uniswap V2 integration dashboard that provides a simplified, opinionated interface for interacting with existing Uniswap V2 pools, while enforcing a small platform fee and offering portfolio + analytics views.
+DexGateway enables users to:
 
-It does not re-implement Uniswap, and it does not abstract away chains at execution time.
+- Swap tokens via V2 pools
+- Add liquidity to existing pools
+- Remove liquidity from positions
+- Create new token pairs
+- View portfolio balances (tokens + LP positions)
+- Inspect pool reserves and share ratios
+- Execute everything through one unified router layer
 
-1. High-Level Architecture (Final)
-User
-  ↓
-Frontend (React + ethers.js)
-  ↓  (wallet network must match selected chain)
-ExchangeDeskRouter (deployed per chain)
-  ↓
-Uniswap V2 (Factory / Router / Pair)
+The interface currently includes:
 
+- Home
+- Swap
+- Add Liquidity
+- Remove Liquidity
+- Portfolio
 
-Backend (optional, read-only) runs in parallel for data.
+---
 
-2. What the Frontend Does (Very Important)
+## System Architecture
 
-The frontend is chain-aware and UX-driven, but not execution-powerful.
+DexGateway enforces clean separation between frontend, on-chain routing, and backend indexing.
 
-Frontend responsibilities
-A. Wallet & Chain Control
+```mermaid
+ flowchart TD
+    U["👤 User"] --> F["Frontend<br/>React + ethers.js"]
+    F --> R["DexGatewayRouter<br/>Per-chain deployment"]
+    R --> DEX["Official V2 Contracts<br/>Factory · Router · Pair"]
+    B["Backend<br/>Read-only indexer"] -.->|"Pool data · TVL · Events"| F
 
-Connect wallet (MetaMask)
-
-Provide chain selector inside Swap / Liquidity UI
-
-When user selects a chain:
-
-Prompt MetaMask to switch network
-
-Block actions until wallet network matches UI chain
-
-B. Feature Scope (your stated goal)
-
-Frontend exposes only:
-
-Swap (Uniswap V2 only)
-
-Add / Remove Liquidity
-
-Pool Creation (V2 pairs)
-
-Portfolio view (tokens + LPs)
-
-Wallet connect
-
-No limit orders, no advanced trading, no V3, no extra complexity.
-
-C. UX Logic (off-chain)
-
-Slippage calculation
-
-Decimal normalization
-
-Token selection
-
-Input validation
-
-Chain availability checks
-
-3. What the ExchangeDeskRouter Does (On-Chain)
-
-This is the single enforced integration point per chain.
-
-One router per chain (mandatory)
-
-Sepolia → Router deployed on Sepolia
-
-Polygon → Router deployed on Polygon
-
-Arbitrum → Router deployed on Arbitrum
-
-Same code. Same ABI. Different deployments.
-
-Router responsibilities (strictly limited)
-
-The router is NOT a Uniswap replacement.
-It is a thin toll-booth + event recorder.
-
-A. Enforce platform fee (0.005%)
-
-Fee is taken on-chain
-
-Cannot be bypassed by frontend
-
-Only applied to V2 pools
-
-B. Forward execution to Uniswap V2
-
-Router functions:
-
-swapExact*
-
-addLiquidity*
-
-removeLiquidity*
-
-createPairIfNotExists
-
-Internally:
-
-Pull tokens from user
-
-Deduct 0.005% fee
-
-Approve Uniswap Router
-
-Forward the call
-
-Return results
-
-No AMM math.
-No reserve logic.
-No pricing logic.
-
-C. Emit clean, unified events
-
-Your router emits:
-
-Swap events
-
-Liquidity add/remove events
-
-Pool creation events
-
-These are easier to index than raw Uniswap events.
-
-4. What the Backend Does (Optional but Powerful)
-
-Backend is read-only and chain-agnostic.
-
-Backend responsibilities
-
-Index all Uniswap V2 pools (per chain)
-
-Calculate TVL from reserves
-
-Index ExchangeDeskRouter events
-
-Build:
-
-Pool explorer
-
-Live trades feed
-
-Portfolio aggregation
-
-Serve fast APIs so UI loads data before wallet connect
-
-Backend NEVER:
-
-Signs transactions
-
-Holds keys
-
-Executes swaps
-
-Custodies funds
-
-UniV2-ExchangeDesk is a multi-chain Uniswap V2 integration platform that provides a simplified interface for swaps, liquidity management, pool creation, and portfolio tracking. It uses a thin, chain-local ExchangeDeskRouter deployed per network to enforce a minimal platform fee and emit unified events, while delegating all AMM logic to existing Uniswap V2 contracts. The frontend manages chain selection and wallet network switching, and the backend provides read-only analytics and indexing. The system is integration-first, chain-correct, and avoids protocol re-implementation.
-
+    style R fill:#6366f1,color:#fff
+    style DEX fill:#f97316,color:#fff
+    style B fill:#64748b,color:#fff
 ```
-src/
-├─ app/
-│  ├─ App.jsx
-│  ├─ Router.jsx
-│  └─ Layout.jsx
-│
-├─ config/
-│  ├─ chains.js
-│  ├─ tokens.js
-│  ├─ routers.js
-│  └─ constants.js
-│
-├─ lib/
-│  ├─ provider.js
-│  ├─ signer.js
-│  ├─ contracts.js
-│  └─ switchNetwork.js
-│
-├─ hooks/
-│  ├─ useWallet.js
-│  ├─ useChain.js
-│  ├─ useRouter.js
-│  ├─ useSlippage.js
-│  └─ useDeadline.js
-│
-├─ services/
-│  ├─ swap.service.js
-│  ├─ liquidity.service.js
-│  ├─ pool.service.js
-│  └─ portfolio.service.js
-│
-├─ components/
-│  ├─ Navbar.jsx
-│  ├─ WalletButton.jsx
-│  ├─ ChainSelector.jsx
-│  ├─ TokenSelector.jsx
-│  ├─ SwapBox.jsx
-│  ├─ PoolTable.jsx
-│  └─ LiquidityModal.jsx
-│
-├─ pages/
-│  ├─ Home.jsx
-│  ├─ Swap.jsx
-│  ├─ Liquidity.jsx
-│  ├─ Portfolio.jsx
-│  └─ CreatePool.jsx
-│
-└─ index.jsx
 
+### Execution Flow
+```mermaid
+flowchart LR
+    A([User selects chain]) --> B[MetaMask network enforcement]
+    B --> C[Swap / Add / Remove / Create]
+    C --> D[DexGatewayRouter]
+    D --> E[Deduct 0.01% protocol fee on-chain]
+    E --> F[Approve + forward to official V2 Router]
+    F --> G[AMM executes and returns result]
+
+    style D fill:#6366f1,color:#fff
+    style E fill:#ef4444,color:#fff
+    style F fill:#f97316,color:#fff
 ```
+
+---
+
+## System Layers
+
+### 1 — Frontend (React + ethers.js)
+
+The frontend handles all user-facing coordination. It is **not** a security engine and does not execute AMM math.
+
+Responsibilities:
+- Wallet connection via MetaMask (EIP-1193)
+- Chain selector + network switching enforcement
+- Slippage calculation and input validation
+- Decimal normalization
+- Token selection and portfolio rendering
+
+The wallet's connected network must match the selected chain before any execution is permitted.
+
+
+### 2 — ExchangeDexRouter (On-Chain)
+
+Each supported chain has its own `ExchangeDexRouter.sol` deployment. It is a **thin execution gateway** — not an AMM.
+```mermaid
+flowchart TD
+    A[Incoming user call] --> B{Fee applied?}
+    B -- No --> C[Deduct 0.01% from input token]
+    B -- Yes --> D[Approve official V2 Router]
+    C --> D
+    D --> E[Forward call to V2 Router]
+    E --> F[swapExact* / addLiquidity* / removeLiquidity* / createPair]
+    F --> G[Emit unified DexGateway event]
+    G --> H[Return result to user]
+
+    style C fill:#ef4444,color:#fff
+    style E fill:#f97316,color:#fff
+```
+
+The router:
+- Pulls tokens from the user
+- Deducts the fee on-chain (non-bypassable via frontend)
+- Approves the official DEX router
+- Forwards the call
+- Emits a standardized event for backend indexing
+
+The router does **not** reimplement AMM math, modify reserve logic, or perform any cross-chain execution.
+
+
+### 3 — Backend (Read-Only)
+
+The backend is a strictly read-only indexing and serving layer.
+
+Responsibilities:
+- Index pools and events per chain
+- Calculate TVL from reserve data
+- Aggregate user LP positions
+- Serve fast APIs for UI rendering
+
+The backend never signs transactions, holds keys, or touches user funds.
+
+---
+
+## Fee Model
+
+DexGateway enforces a `0.01% protocol fee` via its on-chain router.
+
+- Fee is deducted before forwarding to official DEX routers.
+- Fee logic cannot be bypassed through frontend manipulation.
+- Fee is applied only at the DexGateway routing layer.
+
+This ensures consistent platform-level monetization while preserving original AMM mechanics.
+
+---
+
+## Security Considerations
+
+- No reimplementation of AMM math — all execution delegated to official contracts
+- No custody of user funds at any layer
+- Minimal Solidity logic surface in `ExchangeDexRouter.sol`
+- Fee enforcement is on-chain and cannot be bypassed
+- Backend is read-only with no signing capability
+- Wallet network enforcement prevents execution on mismatched chains
+
+---
+
+## Getting Started
+```bash
+# Clone
+git clone https://github.com/Sourav-IIITBPL/DexGateway && cd dexgateway
+
+# Install contracts
+forge install
+
+# Run tests
+forge test -vv
+
+# Install frontend
+cd frontend && npm install && npm run dev
+
+# Install backend
+cd backend && npm install && npm run dev
+```
+
+---
+
+## Project Status
+
+> 🟡 **Under Active Development** — Core swap and liquidity routing is implemented. Ongoing work: indexing improvements, UI refinement, and multi-chain consistency.
+
+---
+
+<div align="center">
+
+**Ethereum · BNB Chain · Arbitrum · Polygon · Avalanche · Base · Unichain · Shibarium**
+
+*DexGateway — One router. Every V2 pool.*
+
+</div>
