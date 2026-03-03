@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧩 DexGateway
+# DexGateway
 
 **Multi-Chain AMM Execution Infrastructure**
 
@@ -252,3 +252,4 @@ cd backend && npm install && npm run dev
 *DexGateway — One router. Every V2 pool.*
 
 </div>
+
